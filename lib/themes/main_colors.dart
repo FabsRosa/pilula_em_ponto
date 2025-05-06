@@ -1,0 +1,20 @@
+import 'package:flutter/material.dart';
+
+const kSeedColor = Color.fromARGB(255, 111, 162, 255);
+const kSeedColorBright = Color.fromARGB(255, 150, 187, 255);
+const kSeedColorBrighter = Color.fromARGB(255, 174, 202, 255);
+const kBackgroundColor = Color.fromARGB(255, 18, 18, 18);
+const kPrimaryColor = Color(0xFF66A98F);
+const kDarkerPrimaryColor = Color(0xFF196B52);
+const kSecondaryColor = Color(0xFFB59F6A);
+const kTertiaryColor = Color(0xFF4D8C7B);
+const kOnContainer = Color(0xFFFFFFFF);
+const kSurfaceColor = Color(0xFFD1E5DC);
+const kErrorColor = Color(0xFFCC735D);
+
+const kGrayBright = Color.fromARGB(255, 240, 240, 240);
+
+final kColorSchemeDark = ColorScheme.fromSeed(
+  seedColor: kSeedColor,
+  brightness: Brightness.dark,
+);
