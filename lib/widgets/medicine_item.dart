@@ -40,7 +40,7 @@ class MedicineItem extends ConsumerWidget {
           leading: Icon(Icons.medication, color: kPrimaryColor, size: 28),
           title: Text(medicine.name, style: TextStyle(fontSize: 24)),
           subtitle: Text(
-            'A cada ${medicine.dose.interval.toString()} horas',
+            'A cada ${medicine.dose /* .interval.toString() */} horas',
             style: TextStyle(fontSize: 16),
           ),
           trailing: IconButton(

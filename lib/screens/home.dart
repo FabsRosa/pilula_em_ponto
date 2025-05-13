@@ -1,4 +1,4 @@
-import 'package:pilula_em_ponto/screens/new_medicine.dart';
+import 'package:pilula_em_ponto/screens/new_medicine/new_medicine.dart';
 import 'package:pilula_em_ponto/themes/main_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:pilula_em_ponto/widgets/medicine_list.dart';
@@ -25,11 +25,15 @@ class _HomeState extends State<Home> {
     return Positioned(
       bottom: 45,
       right: 30,
-      child: FloatingActionButton(
+      child: FloatingActionButton.extended(
         backgroundColor: kPrimaryColor,
         foregroundColor: kOnContainer,
         onPressed: () => _onAddButton(context: context),
-        child: const Icon(Icons.add),
+        icon: const Icon(Icons.add, size: 30),
+        label: const Text(
+          'Adicionar',
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
       ),
     );
   }
@@ -38,7 +42,10 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Pilula em Ponto'),
+        title: const Text(
+          'Remédio em Ponto',
+          style: TextStyle(fontSize: 26, color: Colors.white),
+        ),
         backgroundColor: kPrimaryColor,
         foregroundColor: kOnContainer,
       ),

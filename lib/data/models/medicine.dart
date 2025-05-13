@@ -3,8 +3,8 @@ import 'package:uuid/uuid.dart';
 
 class Medicine {
   final String id;
-  Medicine({required this.name, required this.dose}) : id = Uuid().v4();
+  Medicine({required this.name, this.dose}) : id = Uuid().v4();
 
   final String name;
-  final Dose dose;
+  final Dose? dose;
 }
