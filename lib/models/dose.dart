@@ -1,4 +1,4 @@
-import 'package:pilula_em_ponto/data/models/medicine_type.dart';
+import 'package:pilula_em_ponto/models/medicine_type.dart';
 
 class Dose {
   const Dose({

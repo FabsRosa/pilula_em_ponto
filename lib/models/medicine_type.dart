@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum MedicineTypeId { pills, drops, syrup, injection, capsule }
+enum MedicineTypeId { pills, drops, syrup, injection, capsule, notInformed }
 
 class MedicineType {
   const MedicineType({
@@ -13,6 +13,8 @@ class MedicineType {
   final String label;
   final IconData icon;
 
+  String get lowercaseLabel => label.toLowerCase();
+
   static const List<MedicineType> medicineTypes = [
     MedicineType(
       id: MedicineTypeId.pills,
@@ -22,7 +24,7 @@ class MedicineType {
     MedicineType(
       id: MedicineTypeId.capsule,
       label: 'Cápsulas',
-      icon: Icons.medical_services_outlined,
+      icon: Icons.all_inclusive,
     ),
     MedicineType(
       id: MedicineTypeId.drops,
@@ -36,8 +38,13 @@ class MedicineType {
     ),
     MedicineType(
       id: MedicineTypeId.injection,
-      label: 'Injeção',
+      label: 'Injeções',
       icon: Icons.show_chart,
+    ),
+    MedicineType(
+      id: MedicineTypeId.notInformed,
+      label: 'Não informar',
+      icon: Icons.block,
     ),
   ];
 }

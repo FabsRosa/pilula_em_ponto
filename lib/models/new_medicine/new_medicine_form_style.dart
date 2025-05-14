@@ -27,14 +27,22 @@ class NewMedicineFormStyle {
     );
   }
 
-  static Widget finishButton({required void Function() saveForm}) {
+  static Widget finishButton({
+    required void Function() saveForm,
+    required bool Function() validateForm,
+    Color color = kPrimaryColor,
+  }) {
     return Positioned(
       bottom: 45,
       right: 30,
       child: FloatingActionButton.extended(
-        backgroundColor: kPrimaryColor,
+        backgroundColor: color,
         foregroundColor: kOnContainer,
-        onPressed: () => saveForm,
+        onPressed: () {
+          if (validateForm()) {
+            saveForm();
+          }
+        },
         icon: const Icon(Icons.check, size: 30),
         label: const Text(
           'Salvar',
@@ -46,23 +54,52 @@ class NewMedicineFormStyle {
 
   static Widget nextButton({
     required BuildContext context,
-    required Widget nextScreen,
+    required Widget Function() nextScreen,
+    required bool Function() validateForm,
+    Color color = kSecondaryColor,
   }) {
     return Positioned(
       bottom: 45,
       right: 30,
       child: FloatingActionButton.extended(
-        backgroundColor: kSecondaryColor,
+        backgroundColor: color,
         foregroundColor: kOnContainer,
-        onPressed:
-            () => Navigator.of(
+        onPressed: () {
+          if (validateForm()) {
+            Navigator.of(
               context,
-            ).push(MaterialPageRoute(builder: (ctx) => nextScreen)),
+            ).push(MaterialPageRoute(builder: (ctx) => nextScreen()));
+          }
+        },
         icon: const Icon(Icons.arrow_forward, size: 30),
         label: const Text(
           'Próximo',
           style: TextStyle(fontSize: 20, color: Colors.white),
         ),
+      ),
+    );
+  }
+
+  static Widget nextButtonNotPositioned({
+    required BuildContext context,
+    required Widget Function() nextScreen,
+    required bool Function() validateForm,
+    Color color = kSecondaryColor,
+  }) {
+    return FloatingActionButton.extended(
+      backgroundColor: color,
+      foregroundColor: kOnContainer,
+      onPressed: () {
+        if (validateForm()) {
+          Navigator.of(
+            context,
+          ).push(MaterialPageRoute(builder: (ctx) => nextScreen()));
+        }
+      },
+      icon: const Icon(Icons.arrow_forward, size: 30),
+      label: const Text(
+        'Próximo',
+        style: TextStyle(fontSize: 20, color: Colors.white),
       ),
     );
   }

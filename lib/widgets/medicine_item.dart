@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pilula_em_ponto/data/models/medicine.dart';
+import 'package:pilula_em_ponto/models/medicine.dart';
 import 'package:pilula_em_ponto/providers/medicine_provider.dart';
 import 'package:pilula_em_ponto/themes/main_colors.dart';
 
@@ -12,6 +12,20 @@ class MedicineItem extends ConsumerWidget {
 
   _onDeleteItem({required Medicine medicine, required WidgetRef ref}) {
     ref.read(medicinesProvider.notifier).removeMedicine(medicine);
+  }
+
+  String _getIntervalString(int frequency) {
+    final totalMinutes = (24 * 60) ~/ frequency;
+    final hours = totalMinutes ~/ 60;
+    final minutes = totalMinutes % 60;
+
+    if (hours > 0 && minutes > 0) {
+      return '$hours horas e $minutes minutos';
+    } else if (hours > 0) {
+      return '$hours horas';
+    } else {
+      return '$minutes minutos';
+    }
   }
 
   @override
@@ -40,7 +54,7 @@ class MedicineItem extends ConsumerWidget {
           leading: Icon(Icons.medication, color: kPrimaryColor, size: 28),
           title: Text(medicine.name, style: TextStyle(fontSize: 24)),
           subtitle: Text(
-            'A cada ${medicine.dose /* .interval.toString() */} horas',
+            'A cada ${_getIntervalString(medicine.frequency)}',
             style: TextStyle(fontSize: 16),
           ),
           trailing: IconButton(

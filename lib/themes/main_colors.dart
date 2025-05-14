@@ -13,7 +13,7 @@ const kSecondaryColorBrighter = Color.fromARGB(255, 247, 205, 255);
 const kTertiaryColor = Color(0xFF4D8C7B);
 const kOnContainer = Color(0xFFFFFFFF);
 const kSurfaceColor = Color(0xFFD1E5DC);
-const kErrorColor = Color(0xFFCC735D);
+const kErrorColor = Color.fromARGB(255, 255, 173, 173);
 
 const kGrayBright = Color.fromARGB(255, 240, 240, 240);
 

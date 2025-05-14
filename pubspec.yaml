@@ -23,6 +23,7 @@ dependencies:
   uuid: ^4.5.1
   flex_seed_scheme: ^3.5.1
   sqflite: ^2.4.2
+  dropdown_button2: ^2.3.9
 
 dev_dependencies:
   flutter_test:
@@ -33,4 +34,9 @@ flutter:
   uses-material-design: true
   assets:
   - .env
-  - assets/images/new_medicine.png
+  - assets/images/green_medicine.png
+  - assets/images/green_medicine_time.png
+  - assets/images/green_medicine_new.png
+  - assets/images/purple_medicine_plus.png
+  - assets/images/purple_medicine_type.png
+  - assets/images/purple_medicine.png

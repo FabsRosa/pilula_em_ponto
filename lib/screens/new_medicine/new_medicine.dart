@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:pilula_em_ponto/data/models/medicine.dart';
+import 'package:pilula_em_ponto/models/medicine.dart';
 import 'package:pilula_em_ponto/providers/medicine_provider.dart';
-import 'package:pilula_em_ponto/screens/new_medicine/first_screen.dart';
-import 'package:pilula_em_ponto/widgets/new_medicine/new_medicine_form_data.dart';
+import 'package:pilula_em_ponto/screens/new_medicine/form_screens/first_screen.dart';
+import 'package:pilula_em_ponto/models/new_medicine/new_medicine_form_data.dart';
 
 class NewMedicineScreen extends StatelessWidget {
   const NewMedicineScreen({super.key});
@@ -33,17 +33,39 @@ class _NewMedicineContentState extends ConsumerState<_NewMedicineContent> {
 
       ref
           .read(medicinesProvider.notifier)
-          .addMedicine(Medicine(name: _formData.nameController.text));
+          .addMedicine(
+            Medicine(
+              name: _formData.nameController.text,
+              frequency: int.parse(_formData.frequencyController.text),
+              medicineType: _formData.medicineType!.id,
+              time: TimeOfDay(
+                hour: int.parse(_formData.hourController.text),
+                minute: int.parse(_formData.minuteController.text),
+              ),
+              quantity: int.tryParse(_formData.frequencyController.text),
+              isLimitedTime: _formData.isLimitedTime,
+              daysOfUse: int.tryParse(_formData.daysOfUseController.text),
+            ),
+          );
 
-      Navigator.of(context).pop();
+      Navigator.of(context).popUntil((route) => route.isFirst);
     }
+  }
+
+  bool _validateForm() {
+    return _formKey.currentState!.validate();
   }
 
   @override
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
-      child: FirstScreen(saveForm: _saveForm, formData: _formData),
+      child: FirstScreen(
+        formKey: _formKey,
+        saveForm: _saveForm,
+        validateForm: _validateForm,
+        formData: _formData,
+      ),
     );
   }
 }

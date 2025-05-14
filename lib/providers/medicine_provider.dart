@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:pilula_em_ponto/data/models/medicine.dart';
+import 'package:pilula_em_ponto/models/medicine.dart';
 
 class MedicinesNotifier extends StateNotifier<List<Medicine>> {
   MedicinesNotifier() : super(const []);
