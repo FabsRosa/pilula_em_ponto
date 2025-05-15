@@ -25,25 +25,45 @@ class FourthScreen extends StatefulWidget {
 }
 
 class _FourthScreenState extends State<FourthScreen> {
-  bool _isHourFieldEmpty = false;
-  bool _isMinuteFieldEmpty = false;
-  bool _isFrequencyFieldEmpty = false;
+  String? _isHourFieldEmpty;
+  String? _isMinuteFieldEmpty;
+  String? _isFrequencyFieldEmpty;
 
   bool validator() {
-    var isHourFieldEmpty = widget.formData.hourController.text.isEmpty;
-    var isMinuteFieldEmpty = widget.formData.hourController.text.isEmpty;
-    var isFrequencyFieldEmpty =
-        widget.formData.frequencyController.text.isEmpty ||
-        int.parse(widget.formData.frequencyController.text) <= 0;
+    String? isHourFieldEmpty;
+    String? isMinuteFieldEmpty;
+    String? isFrequencyFieldEmpty;
+
+    if (widget.formData.hourController.text.isEmpty) {
+      isHourFieldEmpty = 'Informe';
+    } else if (int.parse(widget.formData.hourController.text) < 0 ||
+        int.parse(widget.formData.hourController.text) >= 24) {
+      isHourFieldEmpty = 'Entre\n0 e 24';
+    }
+
+    if (widget.formData.minuteController.text.isEmpty) {
+      isMinuteFieldEmpty = 'Informe';
+    } else if (int.parse(widget.formData.minuteController.text) < 0 ||
+        int.parse(widget.formData.minuteController.text) >= 60) {
+      isMinuteFieldEmpty = 'Entre\n0 e 59';
+    }
+
+    if (widget.formData.frequencyController.text.isEmpty) {
+      isFrequencyFieldEmpty = 'Informe uma frequência';
+    } else if (int.parse(widget.formData.frequencyController.text) <= 0 ||
+        int.parse(widget.formData.frequencyController.text) > 24) {
+      isFrequencyFieldEmpty = 'Informe valor entre 1 e 24';
+    }
+
     widget.validateForm();
     setState(() {
       _isHourFieldEmpty = isHourFieldEmpty;
       _isMinuteFieldEmpty = isMinuteFieldEmpty;
       _isFrequencyFieldEmpty = isFrequencyFieldEmpty;
     });
-    return !_isHourFieldEmpty &&
-        !_isMinuteFieldEmpty &&
-        !_isFrequencyFieldEmpty;
+    return isHourFieldEmpty == null &&
+        isMinuteFieldEmpty == null &&
+        isFrequencyFieldEmpty == null;
   }
 
   Widget get _formContent {

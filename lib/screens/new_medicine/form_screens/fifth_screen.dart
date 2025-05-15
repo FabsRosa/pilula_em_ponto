@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pilula_em_ponto/models/new_medicine/new_medicine_form_data.dart';
 import 'package:pilula_em_ponto/models/new_medicine/new_medicine_form_style.dart';
 import 'package:pilula_em_ponto/widgets/new_medicine/fields/days_of_use_field.dart';
-import 'package:pilula_em_ponto/widgets/new_medicine/fields/is_limited_field.dart';
+import 'package:pilula_em_ponto/widgets/new_medicine/fields/is_continuous_field.dart';
 
 class FifthScreen extends StatefulWidget {
   const FifthScreen({
@@ -23,22 +23,27 @@ class FifthScreen extends StatefulWidget {
 }
 
 class _FifthScreenState extends State<FifthScreen> {
-  bool _isFieldEmpty = false;
+  String? _isFieldEmpty;
 
   bool validator() {
-    var isFieldEmpty =
-        widget.formData.daysOfUseController.text.isEmpty ||
-        int.parse(widget.formData.daysOfUseController.text) <= 0;
+    String? isFieldEmpty;
+
+    if (widget.formData.daysOfUseController.text.isEmpty) {
+      isFieldEmpty = 'Informe uma quantidade';
+    } else if (int.parse(widget.formData.daysOfUseController.text) <= 0) {
+      isFieldEmpty = 'Informe um valor maior que zero';
+    }
+
     widget.validateForm();
     setState(() {
       _isFieldEmpty = isFieldEmpty;
     });
-    return !widget.formData.isLimitedTime || !isFieldEmpty;
+    return widget.formData.isContinuous || isFieldEmpty == null;
   }
 
-  void updateIsLimitedTime(bool isLimitedTime) {
+  void updateIsLimitedTime(bool isContinuous) {
     setState(() {
-      widget.formData.isLimitedTime = isLimitedTime;
+      widget.formData.isContinuous = isContinuous;
     });
   }
 
@@ -61,7 +66,7 @@ class _FifthScreenState extends State<FifthScreen> {
             ),
             const SizedBox(height: 40),
             Text(
-              'Será consumido por tempo limitado?',
+              'É medicação de uso contínuo?',
               textAlign: TextAlign.center,
               overflow: TextOverflow.visible,
               softWrap: true,
@@ -71,12 +76,12 @@ class _FifthScreenState extends State<FifthScreen> {
               ),
             ),
             const SizedBox(height: 24),
-            IsLimitedField(
-              isLimitedTime: widget.formData.isLimitedTime,
+            IsContinuousField(
+              isContinuous: widget.formData.isContinuous,
               updateIsLimitedTime: updateIsLimitedTime,
             ),
             const SizedBox(height: 48),
-            if (widget.formData.isLimitedTime)
+            if (!widget.formData.isContinuous)
               Text(
                 'Por quantos dias?',
                 textAlign: TextAlign.center,
@@ -87,8 +92,8 @@ class _FifthScreenState extends State<FifthScreen> {
                   color: Colors.white,
                 ),
               ),
-            if (widget.formData.isLimitedTime) const SizedBox(height: 24),
-            if (widget.formData.isLimitedTime)
+            if (!widget.formData.isContinuous) const SizedBox(height: 22),
+            if (!widget.formData.isContinuous)
               DaysOfUseField(
                 controller: widget.formData.daysOfUseController,
                 isFieldEmpty: _isFieldEmpty,

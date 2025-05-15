@@ -17,7 +17,7 @@ class NameField extends StatelessWidget {
         'Digite o nome',
         Icon(
           Icons.medical_services,
-          color: kPrimaryColor,
+          color: kPrimaryColorBrighter,
           size: NewMedicineFormStyle.iconSize,
         ),
       ).copyWith(
@@ -25,6 +25,7 @@ class NameField extends StatelessWidget {
       ),
       autovalidateMode: AutovalidateMode.onUnfocus,
       autofocus: false,
+      textCapitalization: TextCapitalization.words,
       validator: (value) {
         if (value == null ||
             value.isEmpty ||

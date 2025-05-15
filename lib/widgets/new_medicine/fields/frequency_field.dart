@@ -6,7 +6,7 @@ import 'package:pilula_em_ponto/models/new_medicine/new_medicine_form_style.dart
 
 class FrequencyField extends StatelessWidget {
   final TextEditingController controller;
-  final bool isFieldEmpty;
+  final String? isFieldEmpty;
 
   const FrequencyField({
     required this.controller,
@@ -17,7 +17,7 @@ class FrequencyField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      forceErrorText: isFieldEmpty ? 'Informe uma frequência.' : null,
+      forceErrorText: isFieldEmpty,
       controller: controller,
       style: TextStyle(fontSize: 20),
       keyboardType: TextInputType.number,
@@ -26,7 +26,7 @@ class FrequencyField extends StatelessWidget {
         'Digite a frequência',
         Icon(
           Icons.repeat,
-          color: kPrimaryColor,
+          color: kPrimaryColorBrighter,
           size: NewMedicineFormStyle.iconSize,
         ),
       ).copyWith(errorStyle: TextStyle(fontSize: 18)),

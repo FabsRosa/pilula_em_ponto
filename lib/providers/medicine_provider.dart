@@ -21,6 +21,16 @@ class MedicinesNotifier extends StateNotifier<List<Medicine>> {
     newState.insert(index, medicine);
     state = newState;
   }
+
+  void updateMedicine({
+    required Medicine updatedMedicine,
+    required String oldMedicineId,
+  }) {
+    state =
+        state.map((medicine) {
+          return medicine.id == oldMedicineId ? updatedMedicine : medicine;
+        }).toList();
+  }
 }
 
 final medicinesProvider =

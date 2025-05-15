@@ -5,11 +5,11 @@ class NewMedicineFormData with ChangeNotifier {
   final nameController = TextEditingController();
   final quantityController = TextEditingController();
   final hourController = TextEditingController();
-  final minuteController = TextEditingController(text: '00');
+  final minuteController = TextEditingController();
   final frequencyController = TextEditingController();
   final daysOfUseController = TextEditingController();
   MedicineType? medicineType;
-  bool isLimitedTime = true;
+  bool isContinuous = true;
 
   @override
   void dispose() {

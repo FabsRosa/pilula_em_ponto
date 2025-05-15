@@ -27,29 +27,45 @@ class _NewMedicineContentState extends ConsumerState<_NewMedicineContent> {
   final _formKey = GlobalKey<FormState>();
   final _formData = NewMedicineFormData();
 
+  DateTime get _firstUseDate {
+    final now = DateTime.now();
+    final firstUseTime = TimeOfDay(
+      hour: int.parse(_formData.hourController.text),
+      minute: int.parse(_formData.minuteController.text),
+    );
+    final firstUseDateTime = DateTime(
+      now.year,
+      now.month,
+      now.day,
+      firstUseTime.hour,
+      firstUseTime.minute,
+    );
+    return firstUseDateTime.isBefore(now)
+        ? firstUseDateTime.add(const Duration(days: 1))
+        : firstUseDateTime;
+  }
+
   void _saveForm() {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-
-      ref
-          .read(medicinesProvider.notifier)
-          .addMedicine(
-            Medicine(
-              name: _formData.nameController.text,
-              frequency: int.parse(_formData.frequencyController.text),
-              medicineType: _formData.medicineType!.id,
-              time: TimeOfDay(
-                hour: int.parse(_formData.hourController.text),
-                minute: int.parse(_formData.minuteController.text),
-              ),
-              quantity: int.tryParse(_formData.frequencyController.text),
-              isLimitedTime: _formData.isLimitedTime,
-              daysOfUse: int.tryParse(_formData.daysOfUseController.text),
+    _formKey.currentState!.save();
+    ref
+        .read(medicinesProvider.notifier)
+        .addMedicine(
+          Medicine(
+            name: _formData.nameController.text,
+            frequency: int.parse(_formData.frequencyController.text),
+            medicineType: _formData.medicineType!.id,
+            firstUseTime: TimeOfDay(
+              hour: int.parse(_formData.hourController.text),
+              minute: int.parse(_formData.minuteController.text),
             ),
-          );
+            quantity: int.tryParse(_formData.frequencyController.text),
+            isContinuous: _formData.isContinuous,
+            daysOfUse: int.tryParse(_formData.daysOfUseController.text),
+            firstUseDate: _firstUseDate,
+          ),
+        );
 
-      Navigator.of(context).popUntil((route) => route.isFirst);
-    }
+    Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
   bool _validateForm() {

@@ -24,17 +24,22 @@ class ThirdScreen extends StatefulWidget {
 }
 
 class _ThirdScreenState extends State<ThirdScreen> {
-  bool _isFieldEmpty = false;
+  String? _isFieldEmpty;
 
   bool validator() {
-    var isFieldEmpty =
-        widget.formData.quantityController.text.isEmpty ||
-        int.parse(widget.formData.quantityController.text) <= 0;
+    String? isFieldEmpty;
+
+    if (widget.formData.quantityController.text.isEmpty) {
+      isFieldEmpty = 'Informe uma quantidade';
+    } else if (int.parse(widget.formData.quantityController.text) <= 0) {
+      isFieldEmpty = 'Informe um valor maior\nque zero';
+    }
+
     widget.validateForm();
     setState(() {
       _isFieldEmpty = isFieldEmpty;
     });
-    return !isFieldEmpty;
+    return isFieldEmpty == null;
   }
 
   void updateMedicineType(MedicineType medicineType) {
@@ -70,7 +75,10 @@ class _ThirdScreenState extends State<ThirdScreen> {
             ),
             const SizedBox(height: 40),
             Text(
-              '$quantityQuestionPrefix ${widget.formData.medicineType!.lowercaseLabel}?',
+              '$quantityQuestionPrefix ${widget.formData.medicineType!.lowercaseLabel} por dose consumida?',
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.visible,
+              softWrap: true,
               style: TextStyle(
                 fontSize: NewMedicineFormStyle.fontSize,
                 color: Colors.white,

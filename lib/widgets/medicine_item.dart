@@ -1,16 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pilula_em_ponto/models/medicine.dart';
+import 'package:pilula_em_ponto/models/medicine_type.dart';
 import 'package:pilula_em_ponto/providers/medicine_provider.dart';
 import 'package:pilula_em_ponto/themes/main_colors.dart';
 
-class MedicineItem extends ConsumerWidget {
-  const MedicineItem({super.key, required this.medicine, required this.index});
+class MedicineItem extends ConsumerStatefulWidget {
+  const MedicineItem({
+    super.key,
+    required this.medicine,
+    required this.index,
+    this.alpha = 1,
+  });
 
   final Medicine medicine;
   final int index;
+  final double alpha;
 
-  _onDeleteItem({required Medicine medicine, required WidgetRef ref}) {
+  @override
+  ConsumerState<MedicineItem> createState() => _MedicineItemState();
+}
+
+class _MedicineItemState extends ConsumerState<MedicineItem> {
+  void _toggleActiveStatus() {
+    setState(() {
+      ref
+          .read(medicinesProvider.notifier)
+          .updateMedicine(
+            updatedMedicine: widget.medicine.copyWith(
+              isActive: !widget.medicine.isActive,
+            ),
+            oldMedicineId: widget.medicine.id,
+          );
+    });
+  }
+
+  _onDeleteItem({required Medicine medicine}) {
     ref.read(medicinesProvider.notifier).removeMedicine(medicine);
   }
 
@@ -29,11 +54,11 @@ class MedicineItem extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Dismissible(
-      key: ValueKey(medicine.id),
+      key: ValueKey(widget.medicine.id),
       background: Container(
-        decoration: BoxDecoration(color: Theme.of(context).colorScheme.error),
+        decoration: BoxDecoration(color: kErrorColor.withValues(alpha: 0.7)),
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         margin: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
@@ -46,26 +71,87 @@ class MedicineItem extends ConsumerWidget {
         ),
       ),
       onDismissed: (direction) {
-        _onDeleteItem(medicine: medicine, ref: ref);
+        _onDeleteItem(medicine: widget.medicine);
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 16),
         child: ListTile(
-          leading: Icon(Icons.medication, color: kPrimaryColor, size: 28),
-          title: Text(medicine.name, style: TextStyle(fontSize: 24)),
-          subtitle: Text(
-            'A cada ${_getIntervalString(medicine.frequency)}',
-            style: TextStyle(fontSize: 16),
+          leading: Column(
+            children: [
+              Text(
+                widget.medicine.formattedTime(widget.medicine.nextAlarmTime!),
+                style: TextStyle(
+                  fontSize: 25,
+                  color: Colors.white.withValues(alpha: widget.alpha),
+                ),
+              ),
+              Text(
+                widget.medicine.formattedDate(widget.medicine.nextAlarmDate!),
+                style: TextStyle(
+                  fontSize: 14.1,
+                  color: Colors.white.withValues(alpha: widget.alpha),
+                ),
+              ),
+            ],
           ),
-          trailing: IconButton(
-            onPressed: () {
-              _onDeleteItem(medicine: medicine, ref: ref);
-            },
-            icon: Icon(
-              Icons.delete,
-              size: 28,
-              color: Theme.of(context).colorScheme.error,
-            ),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                MedicineType.medicineTypes
+                    .firstWhere(
+                      (type) => type.id == widget.medicine.medicineType,
+                    )
+                    .icon,
+                color: kPrimaryColorBrighter.withValues(alpha: widget.alpha),
+                size: 28,
+              ),
+              const SizedBox(width: 6),
+              Text(
+                widget.medicine.name,
+                style: TextStyle(
+                  fontSize: 24,
+                  color: Colors.white.withValues(alpha: widget.alpha),
+                ),
+                textAlign: TextAlign.start,
+                overflow: TextOverflow.visible,
+                softWrap: true,
+              ),
+            ],
+          ),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(height: 4),
+              Text(
+                'A cada ${_getIntervalString(widget.medicine.frequency)}',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.white.withValues(alpha: widget.alpha),
+                ),
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.visible,
+                softWrap: true,
+              ),
+              Text(
+                widget.medicine.isContinuous
+                    ? 'Uso contínuo'
+                    : '${widget.medicine.daysOfUse.toString()} dias restantes',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.white.withValues(alpha: widget.alpha),
+                ),
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.visible,
+                softWrap: true,
+              ),
+            ],
+          ),
+          trailing: Switch(
+            value: widget.medicine.isActive,
+            onChanged: (value) => _toggleActiveStatus(),
+            activeColor: kPrimaryColorBrighter.withValues(alpha: widget.alpha),
+            inactiveTrackColor: const Color.fromARGB(50, 188, 255, 248),
           ),
           onTap: () {},
         ),

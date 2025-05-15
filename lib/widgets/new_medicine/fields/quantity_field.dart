@@ -7,7 +7,7 @@ import 'package:pilula_em_ponto/models/new_medicine/new_medicine_form_style.dart
 class QuantityField extends StatelessWidget {
   final TextEditingController controller;
   final IconData iconData;
-  final bool isFieldEmpty;
+  final String? isFieldEmpty;
 
   const QuantityField({
     required this.controller,
@@ -19,7 +19,7 @@ class QuantityField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      forceErrorText: isFieldEmpty ? 'Informe uma quantidade.' : null,
+      forceErrorText: isFieldEmpty,
       controller: controller,
       style: TextStyle(fontSize: 20),
       keyboardType: TextInputType.number,

@@ -3,21 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:pilula_em_ponto/models/new_medicine/new_medicine_form_style.dart';
 import 'package:pilula_em_ponto/themes/main_colors.dart';
 
-class IsLimitedField extends StatelessWidget {
-  const IsLimitedField({
+class IsContinuousField extends StatelessWidget {
+  const IsContinuousField({
     super.key,
-    required this.isLimitedTime,
+    required this.isContinuous,
     required this.updateIsLimitedTime,
   });
 
-  final bool isLimitedTime;
+  final bool isContinuous;
   final void Function(bool isLimitedField) updateIsLimitedTime;
   static const radius = 12.0;
 
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField2<bool>(
-      value: isLimitedTime,
+      value: isContinuous,
       dropdownStyleData: _dropdownStyleData,
       buttonStyleData: _buttonStyleData,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -76,7 +76,7 @@ class IsLimitedField extends StatelessWidget {
       fontSize: NewMedicineFormStyle.fontSize,
     ),
     icon: const Icon(Icons.help_outline, size: NewMedicineFormStyle.iconSize),
-    iconColor: kPrimaryColor,
+    iconColor: kPrimaryColorBrighter,
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(radius),
       borderSide: BorderSide(color: Colors.white, width: 1),

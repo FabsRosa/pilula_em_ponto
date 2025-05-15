@@ -7,8 +7,8 @@ import 'package:pilula_em_ponto/models/new_medicine/new_medicine_form_style.dart
 class HourField extends StatelessWidget {
   final TextEditingController hourController;
   final TextEditingController minuteController;
-  final bool isHourFieldEmpty;
-  final bool isMinuteFieldEmpty;
+  final String? isHourFieldEmpty;
+  final String? isMinuteFieldEmpty;
 
   const HourField({
     required this.hourController,
@@ -30,16 +30,28 @@ class HourField extends StatelessWidget {
 
   Widget get _hourField {
     return TextFormField(
-      forceErrorText: isHourFieldEmpty ? 'Informe' : null,
+      forceErrorText: isHourFieldEmpty,
       controller: hourController,
       style: TextStyle(fontSize: 20),
       keyboardType: TextInputType.number,
-      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+      inputFormatters: [
+        FilteringTextInputFormatter.digitsOnly,
+        TextInputFormatter.withFunction((oldValue, newValue) {
+          if (newValue.text.isEmpty) return newValue;
+          final int? value = int.tryParse(newValue.text);
+          if (value == null || value < 0 || value > 23) return oldValue;
+          final formattedValue = value.toString().padLeft(2, '0');
+          return TextEditingValue(
+            text: formattedValue,
+            selection: TextSelection.collapsed(offset: formattedValue.length),
+          );
+        }),
+      ],
       decoration: NewMedicineFormStyle.roundedInputDecoration(
         'Hora',
         Icon(
           Icons.access_time,
-          color: kPrimaryColor,
+          color: kPrimaryColorBrighter,
           size: NewMedicineFormStyle.iconSize,
         ),
       ).copyWith(errorStyle: TextStyle(fontSize: 17)),
@@ -49,14 +61,26 @@ class HourField extends StatelessWidget {
 
   Widget get _minuteField {
     return TextFormField(
-      forceErrorText: isMinuteFieldEmpty ? 'Informe' : null,
+      forceErrorText: isMinuteFieldEmpty,
       controller: minuteController,
       style: TextStyle(fontSize: 20),
       keyboardType: TextInputType.number,
-      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+      inputFormatters: [
+        FilteringTextInputFormatter.digitsOnly,
+        TextInputFormatter.withFunction((oldValue, newValue) {
+          if (newValue.text.isEmpty) return newValue;
+          final int? value = int.tryParse(newValue.text);
+          if (value == null || value < 0 || value > 59) return oldValue;
+          final formattedValue = value.toString().padLeft(2, '0');
+          return TextEditingValue(
+            text: formattedValue,
+            selection: TextSelection.collapsed(offset: formattedValue.length),
+          );
+        }),
+      ],
       decoration: NewMedicineFormStyle.roundedInputDecoration(
         'Minuto',
-        Icon(Icons.more_vert, color: kPrimaryColor, size: 26),
+        Icon(Icons.more_vert, color: kPrimaryColorBrighter, size: 26),
       ).copyWith(errorStyle: TextStyle(fontSize: 17)),
       autofocus: false,
     );
